@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  createdTrips Trip[] @relation("TripCreator")
+  bookings     Booking[]
+  messages     Message[]
+
+  @@map("users")
+}
+
+model Trip {
+  id               String    @id @default(cuid())
+  title            String
+  description      String?
+  origin           String
+  destination      String
+  departureDate    DateTime
+  departureTime    String
+  availableSeats   Int
+  pricePerSeat     Float?
+  status           TripStatus @default(ACTIVE)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // Relations
+  creatorId        String
+  creator          User      @relation("TripCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  bookings         Booking[]
+  messages         Message[]
+
+  @@map("trips")
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  seats       Int           @default(1)
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tripId      String
+  trip        Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tripId])
+  @@map("bookings")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+enum TripStatus {
+  ACTIVE
+  FULL
+  CANCELLED
+  COMPLETED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
