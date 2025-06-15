@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -9,8 +9,9 @@ interface Notification {
   type: string
   title: string
   message: string
+  read: boolean
   createdAt: string
-  tripId: string
+  tripId: string | null
 }
 
 export default function NotificationDropdown() {
@@ -31,7 +32,7 @@ export default function NotificationDropdown() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (!user) return
 
     setLoading(true)
@@ -42,18 +43,37 @@ export default function NotificationDropdown() {
         setNotifications(data.notifications)
       }
     } catch (error) {
-      console.error('Failed to fetch notifications:', error)
     } finally {
       setLoading(false)
+    }
+  }, [user])
+
+  const clearAllNotifications = async () => {
+    try {
+      const response = await fetch('/api/notifications', {
+        method: 'DELETE'
+      })
+      if (response.ok) {
+        setNotifications([])
+      }
+    } catch (error) {
+      // Handle error silently
     }
   }
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen)
-    if (!isOpen && notifications.length === 0) {
+    if (!isOpen) {
       fetchNotifications()
     }
   }
+
+  // Auto-fetch notifications when component mounts
+  useEffect(() => {
+    if (user) {
+      fetchNotifications()
+    }
+  }, [user, fetchNotifications])
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString)
@@ -78,8 +98,9 @@ export default function NotificationDropdown() {
         className="relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5-5-5 5h5z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5-5-5h5z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 13h-2v-2h2v2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 9h-2v-2h2v2z" />
         </svg>
         
         {notifications.length > 0 && (
@@ -90,18 +111,18 @@ export default function NotificationDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border z-50">
-          <div className="p-4 border-b">
+        <div className="absolute right-0 mt-2 w-80 bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow-lg border border-white border-opacity-20 z-50">
+          <div className="p-4 border-b border-opacity-20">
             <h3 className="font-semibold text-gray-900">Notifications</h3>
           </div>
 
           <div className="max-h-96 overflow-y-auto">
             {loading ? (
-              <div className="p-4 text-center text-gray-600">
+              <div className="p-4 text-center text-gray-600 bg-white bg-opacity-50 backdrop-blur-sm rounded-md mx-4 my-2">
                 Loading notifications...
               </div>
             ) : notifications.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center text-gray-500 bg-white bg-opacity-30 backdrop-blur-sm rounded-md mx-4 my-2">
                 <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5-5-5 5h5z" />
                 </svg>
@@ -112,16 +133,22 @@ export default function NotificationDropdown() {
                 {notifications.map((notification) => (
                   <Link
                     key={notification.id}
-                    href={`/trips/${notification.tripId}`}
-                    className="block p-4 hover:bg-gray-50 transition-colors"
+                    href={notification.tripId ? `/trips/${notification.tripId}` : '#'}
+                    className={`block p-4 hover:bg-white hover:bg-opacity-60 backdrop-blur-sm transition-all ${
+                      !notification.read ? 'bg-blue-50 bg-opacity-70 border-l-4 border-l-blue-500' : 'bg-white bg-opacity-30'
+                    }`}
                     onClick={() => setIsOpen(false)}
                   >
                     <div className="flex items-start">
                       <div className={`w-2 h-2 rounded-full mt-2 mr-3 ${
-                        notification.type === 'new_booking' ? 'bg-green-500' : 'bg-blue-500'
+                        notification.type === 'new_booking' ? 'bg-green-500' : 
+                        notification.type === 'new_message' ? 'bg-blue-500' :
+                        notification.type === 'trip_update' ? 'bg-yellow-500' : 'bg-red-500'
                       }`} />
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium text-gray-900">
+                        <h4 className={`text-sm font-medium ${
+                          !notification.read ? 'text-gray-900' : 'text-gray-700'
+                        }`}>
                           {notification.title}
                         </h4>
                         <p className="text-sm text-gray-600 mt-1">
@@ -139,15 +166,15 @@ export default function NotificationDropdown() {
           </div>
 
           {notifications.length > 0 && (
-            <div className="p-3 border-t text-center">
+            <div className="p-3 border-t border-opacity-20 text-center bg-white bg-opacity-50 backdrop-blur-sm">
               <button
                 onClick={() => {
-                  setNotifications([])
+                  clearAllNotifications()
                   setIsOpen(false)
                 }}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-sm bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-800 hover:to-purple-800 font-medium transition-all"
               >
-                Clear all
+                Clear all notifications
               </button>
             </div>
           )}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { TripWithCreator } from '@/types'
@@ -36,13 +36,7 @@ export default function TripDetailPage() {
 
   const tripId = params.id as string
 
-  useEffect(() => {
-    if (tripId) {
-      fetchTrip()
-    }
-  }, [tripId])
-
-  const fetchTrip = async () => {
+  const fetchTrip = useCallback(async () => {
     try {
       const response = await fetch(`/api/trips/${tripId}`)
       if (!response.ok) {
@@ -57,11 +51,16 @@ export default function TripDetailPage() {
       setTrip(data.trip)
     } catch (err) {
       setError('Failed to load trip details')
-      console.error('Fetch trip error:', err)
     } finally {
       setLoading(false)
     }
-  }
+  }, [tripId])
+
+  useEffect(() => {
+    if (tripId) {
+      fetchTrip()
+    }
+  }, [tripId, fetchTrip])
 
   const handleJoinTrip = async () => {
     if (!user || !trip) return
@@ -79,9 +78,9 @@ export default function TripDetailPage() {
 
       // Refresh trip data
       await fetchTrip()
-      alert('Successfully joined trip!')
+      // Successfully joined trip
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to join trip')
+      setError(err instanceof Error ? err.message : 'Failed to join trip')
     } finally {
       setActionLoading(false)
     }
@@ -106,9 +105,9 @@ export default function TripDetailPage() {
       }
 
       await fetchTrip()
-      alert(`Trip ${status.toLowerCase()} successfully!`)
+      // Trip updated successfully
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to update trip')
+      setError(err instanceof Error ? err.message : 'Failed to update trip')
     } finally {
       setActionLoading(false)
     }

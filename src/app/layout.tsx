@@ -3,12 +3,13 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/contexts/AuthContext'
 import Navigation from '@/components/Navigation'
+import ParallaxBackground from '@/components/ParallaxBackground'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TeraVibes Carpool',
-  description: 'Share rides to TeraVibes Festival',
+  title: 'Terabibes Carpool',
+  description: 'Share rides to Teravibes Festival',
 }
 
 export default function RootLayout({
@@ -20,8 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <Navigation />
-          <main>{children}</main>
+          <ParallaxBackground className="min-h-screen">
+            <Navigation />
+            <main>{children}</main>
+          </ParallaxBackground>
         </AuthProvider>
       </body>
     </html>

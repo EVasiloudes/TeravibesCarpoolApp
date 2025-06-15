@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { magic } from '@/lib/magic'
+import { magic } from '@/lib/magic-client'
 import { AuthUser } from '@/types'
 
 interface AuthContextType {
@@ -9,6 +9,8 @@ interface AuthContextType {
   loading: boolean
   login: (email: string) => Promise<void>
   logout: () => Promise<void>
+  refreshUser: () => Promise<void>
+  isLoggedIn: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -17,19 +19,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const isLoggedIn = !!user
+
   useEffect(() => {
-    checkAuth()
+    checkAuthStatus()
   }, [])
 
-  const checkAuth = async () => {
+  const checkAuthStatus = async () => {
     try {
-      const response = await fetch('/api/auth/me')
+      const response = await fetch('/api/auth/me', {
+        credentials: 'include'
+      })
+
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
+      } else {
+        setUser(null)
+        
+        // If we have Magic, also logout from Magic
+        if (magic) {
+          try {
+            await magic.user.logout()
+          } catch (magicError) {
+            // Ignore Magic logout errors
+          }
+        }
       }
     } catch (error) {
-      console.error('Auth check failed:', error)
+      setUser(null)
     } finally {
       setLoading(false)
     }
@@ -42,24 +60,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     try {
       setLoading(true)
-      const token = await magic.auth.loginWithMagicLink({ email })
+
+      const didToken = await magic.auth.loginWithMagicLink({ 
+        email,
+        showUI: true
+      })
       
+      // Send token to our backend
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token }),
+        credentials: 'include',
+        body: JSON.stringify({ didToken }),
       })
-
+      
       if (!response.ok) {
-        throw new Error('Login failed')
+        let errorData
+        try {
+          const responseText = await response.text()
+          errorData = JSON.parse(responseText)
+        } catch (parseError) {
+          errorData = { error: `HTTP ${response.status}: ${response.statusText}` }
+        }
+        throw new Error(errorData.error || 'Login failed')
       }
 
       const data = await response.json()
       setUser(data.user)
     } catch (error) {
-      console.error('Login error:', error)
       throw error
     } finally {
       setLoading(false)
@@ -68,22 +98,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
+      setLoading(true)
+
+      // Logout from Magic
       if (magic) {
         await magic.user.logout()
       }
-      
+
+      // Logout from our backend
       await fetch('/api/auth/logout', {
         method: 'POST',
+        credentials: 'include'
       })
-      
+
       setUser(null)
     } catch (error) {
-      console.error('Logout error:', error)
+      // Ignore logout errors
+    } finally {
+      setLoading(false)
     }
   }
 
+  const refreshUser = async () => {
+    await checkAuthStatus()
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      login, 
+      logout, 
+      refreshUser,
+      isLoggedIn 
+    }}>
       {children}
     </AuthContext.Provider>
   )

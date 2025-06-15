@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyJWT } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { createBookingNotification } from '@/lib/notifications'
 
 export async function POST(
   request: NextRequest,
@@ -120,12 +121,14 @@ export async function POST(
       })
     }
 
+    // Create notification for trip creator
+    await createBookingNotification(tripId, booking.user.email, booking.user.name)
+
     return NextResponse.json({
       booking,
       message: 'Successfully joined trip'
     })
   } catch (error) {
-    console.error('Join trip error:', error)
     return NextResponse.json(
       { error: 'Failed to join trip' },
       { status: 500 }

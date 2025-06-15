@@ -55,7 +55,6 @@ export default function TripsPageContent() {
       setTrips(data.trips)
     } catch (err) {
       setError('Failed to load trips')
-      console.error('Fetch trips error:', err)
     } finally {
       setLoading(false)
       setSearchLoading(false)
@@ -75,9 +74,8 @@ export default function TripsPageContent() {
 
       // Refresh trips list
       fetchTrips()
-      alert('Successfully joined trip!')
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to join trip')
+      setError(err instanceof Error ? err.message : 'Failed to join trip')
     }
   }
 

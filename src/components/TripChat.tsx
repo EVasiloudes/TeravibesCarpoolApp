@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Message } from '@/types'
 import Input from './ui/Input'
@@ -28,19 +28,11 @@ export default function TripChat({ tripId }: TripChatProps) {
   const [error, setError] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    fetchMessages()
-  }, [tripId])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     try {
       const response = await fetch(`/api/trips/${tripId}/messages`)
       if (!response.ok) {
@@ -50,11 +42,18 @@ export default function TripChat({ tripId }: TripChatProps) {
       setMessages(data.messages)
     } catch (err) {
       setError('Failed to load messages')
-      console.error('Fetch messages error:', err)
     } finally {
       setLoading(false)
     }
-  }
+  }, [tripId])
+
+  useEffect(() => {
+    fetchMessages()
+  }, [tripId, fetchMessages])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,17 +88,17 @@ export default function TripChat({ tripId }: TripChatProps) {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold mb-4">Trip Chat</h3>
-        <div className="text-center py-4 text-gray-600">Loading messages...</div>
+      <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Trip Chat</h3>
+        <div className="text-center py-4 text-gray-600 bg-white bg-opacity-50 backdrop-blur-sm rounded-md">Loading messages...</div>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="p-4 border-b">
-        <h3 className="text-lg font-semibold">Trip Chat</h3>
+    <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow border border-white border-opacity-20">
+      <div className="p-4 border-b border-opacity-20">
+        <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Trip Chat</h3>
         <p className="text-sm text-gray-600">
           Chat with other trip participants
         </p>
@@ -107,7 +106,7 @@ export default function TripChat({ tripId }: TripChatProps) {
 
       <div className="h-64 overflow-y-auto p-4 space-y-3">
         {messages.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">
+          <div className="text-center text-gray-500 py-8 bg-white bg-opacity-30 backdrop-blur-sm rounded-md">
             No messages yet. Start the conversation!
           </div>
         ) : (
@@ -119,10 +118,10 @@ export default function TripChat({ tripId }: TripChatProps) {
               }`}
             >
               <div
-                className={`max-w-xs rounded-lg px-3 py-2 ${
+                className={`max-w-xs rounded-lg px-3 py-2 backdrop-blur-sm ${
                   message.userId === user?.id
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-900'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                    : 'bg-white bg-opacity-90 text-gray-900 border border-white border-opacity-50'
                 }`}
               >
                 <div className="text-sm font-medium mb-1">
@@ -147,9 +146,9 @@ export default function TripChat({ tripId }: TripChatProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t border-opacity-20">
         {error && (
-          <div className="text-red-600 text-sm mb-3 bg-red-50 p-2 rounded">
+          <div className="text-red-600 text-sm mb-3 bg-red-50 bg-opacity-90 backdrop-blur-sm p-2 rounded border border-red-200 border-opacity-50">
             {error}
           </div>
         )}
@@ -168,6 +167,7 @@ export default function TripChat({ tripId }: TripChatProps) {
             type="submit"
             disabled={!newMessage.trim() || sending}
             size="sm"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all"
           >
             {sending ? 'Sending...' : 'Send'}
           </Button>

@@ -6,7 +6,7 @@
 - Backend is a postgreSQL database
 
 # Project Description
-This repo contains the code for the TeraVibes Carpool App, a web application built using TypeScript, Vercel, React.js, and Magic link for user authentication. The app allows users to create and join carpool trips, share ride details, and communicate with fellow riders.
+This repo contains the code for the Teravibes Carpool App, a web application built using TypeScript, Vercel, React.js, and Magic link for user authentication. The app allows users to create and join carpool trips, share ride details, and communicate with fellow riders.
 ## Features
 - User registration and login using Magic link authentication
 - Create and join carpool trips

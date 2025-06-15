@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -16,12 +14,41 @@
   }
 }
 
+/* Smooth scrolling and parallax optimizations */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  /* Remove default background for parallax */
+  background: transparent;
+  /* Enable hardware acceleration for smooth scrolling */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Parallax container optimizations */
+.parallax-container {
+  perspective: 1px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Ensure smooth transforms for parallax elements */
+.will-change-transform {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Optimize for mobile touch scrolling */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent horizontal scrolling from parallax effects */
+body, html {
+  overflow-x: hidden;
 }

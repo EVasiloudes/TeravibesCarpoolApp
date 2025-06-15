@@ -45,7 +45,7 @@ export default function TripForm({ onClose }: TripFormProps) {
     description: '',
     origin: '',
     destination: 'Fasli', // Pre-filled as festival location
-    departureDate: '2024-08-24', // Pre-filled as festival date
+    departureDate: '2025-08-23', // Pre-filled as festival date
     departureTime: '',
     availableSeats: 1,
     pricePerSeat: 0,
@@ -88,16 +88,16 @@ export default function TripForm({ onClose }: TripFormProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6">Create a New Trip</h2>
-      
+    <div className="max-w-2xl mx-auto bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Create a New Trip</h2>
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <Input
           label="Trip Title"
           type="text"
           value={formData.title}
           onChange={(e) => handleChange('title', e.target.value)}
-          placeholder="e.g., Drive to TeraVibes from Limassol"
+          placeholder="e.g., Drive to Teravibes from Limassol"
           required
         />
 
@@ -169,7 +169,7 @@ export default function TripForm({ onClose }: TripFormProps) {
         </div>
 
         {error && (
-          <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
+          <div className="text-red-600 text-sm bg-red-50 bg-opacity-90 backdrop-blur-sm p-3 rounded-md border border-red-200 border-opacity-50">
             {error}
           </div>
         )}
@@ -179,17 +179,18 @@ export default function TripForm({ onClose }: TripFormProps) {
             type="submit"
             variant="primary"
             disabled={loading}
-            className="flex-1"
+            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all"
           >
             {loading ? 'Creating...' : 'Create Trip'}
           </Button>
-          
+
           {onClose && (
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
               disabled={loading}
+              className="bg-white bg-opacity-90 backdrop-blur-sm border-opacity-50 hover:bg-opacity-100"
             >
               Cancel
             </Button>

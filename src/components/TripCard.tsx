@@ -18,10 +18,10 @@ export default function TripCard({ trip, onJoin, currentUserId, showJoinButton =
   const isFull = availableSeats <= 0
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow-md border border-white border-opacity-20 p-6 hover:shadow-lg hover:bg-opacity-100 transition-all transform hover:scale-105">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             {trip.title}
           </h3>
           <div className="flex items-center text-sm text-gray-600 mb-2">
@@ -35,7 +35,7 @@ export default function TripCard({ trip, onJoin, currentUserId, showJoinButton =
         
         {trip.pricePerSeat && (
           <div className="text-right">
-            <div className="text-lg font-bold text-green-600">
+            <div className="text-lg font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
               €{trip.pricePerSeat}
             </div>
             <div className="text-xs text-gray-500">per seat</div>
@@ -73,7 +73,7 @@ export default function TripCard({ trip, onJoin, currentUserId, showJoinButton =
       <div className="flex justify-between items-center">
         <Link 
           href={`/trips/${trip.id}`}
-          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-800 hover:to-purple-800 text-sm font-medium transition-all"
         >
           View Details
         </Link>
@@ -89,6 +89,7 @@ export default function TripCard({ trip, onJoin, currentUserId, showJoinButton =
                 variant="primary"
                 size="sm"
                 onClick={() => onJoin?.(trip.id)}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all"
               >
                 Join Trip
               </Button>
@@ -97,7 +98,7 @@ export default function TripCard({ trip, onJoin, currentUserId, showJoinButton =
         )}
 
         {isOwnTrip && (
-          <div className="text-blue-600 text-sm font-medium">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-sm font-medium">
             Your trip
           </div>
         )}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useAuth } from '@/contexts/AuthContext'
 import Button from './ui/Button'
 import AuthModal from './AuthModal'
@@ -12,16 +13,22 @@ export default function Navigation() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  console.log('Navigation render - user:', user, 'showAuthModal:', showAuthModal)
 
   return (
     <>
       <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center space-x-3">
+              <Image
+                src="/teravibes-logo.png"
+                alt="Teravibes Logo"
+                width={40}
+                height={40}
+                className="h-10 w-10"
+              />
               <h1 className="text-xl font-bold text-gray-900">
-                TeraVibes Carpool
+                Teravibes Carpool
               </h1>
             </Link>
 
@@ -60,7 +67,6 @@ export default function Navigation() {
                 <Button
                   size="sm"
                   onClick={() => {
-                    console.log('Desktop Sign In clicked')
                     setShowAuthModal(true)
                   }}
                 >
@@ -127,7 +133,6 @@ export default function Navigation() {
                 ) : (
                   <button
                     onClick={() => {
-                      console.log('Mobile Sign In clicked')
                       setShowAuthModal(true)
                       setMobileMenuOpen(false)
                     }}

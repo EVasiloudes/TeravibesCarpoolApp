@@ -1,4 +1,4 @@
-# TeraVibes Carpool App - Implementation Plan
+# Teravibes Carpool App - Implementation Plan
 
 ## Phase 1: Foundation Setup (Weeks 1-2)
 **Core Infrastructure & Authentication**

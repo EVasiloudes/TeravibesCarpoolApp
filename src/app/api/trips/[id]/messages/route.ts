@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyJWT } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { createMessageNotification } from '@/lib/notifications'
 
 // Get messages for a trip
 export async function GET(
@@ -73,7 +74,6 @@ export async function GET(
 
     return NextResponse.json({ messages })
   } catch (error) {
-    console.error('Messages fetch error:', error)
     return NextResponse.json(
       { error: 'Failed to fetch messages' },
       { status: 500 }
@@ -166,12 +166,14 @@ export async function POST(
       }
     })
 
+    // Create notifications for other trip participants
+    await createMessageNotification(tripId, message.user.email, message.user.name)
+
     return NextResponse.json({
       message,
       success: 'Message sent successfully'
     })
   } catch (error) {
-    console.error('Message creation error:', error)
     return NextResponse.json(
       { error: 'Failed to send message' },
       { status: 500 }
