@@ -94,3 +94,42 @@ export async function createMessageNotification(tripId: string, senderEmail: str
     // Silently fail
   }
 }
+
+export async function createTripUpdateNotification(tripId: string, updaterUserId: string) {
+  try {
+    const trip = await prisma.trip.findUnique({
+      where: { id: tripId },
+      include: {
+        bookings: {
+          select: { userId: true }
+        },
+        creator: {
+          select: { id: true, name: true, email: true }
+        }
+      }
+    })
+
+    if (trip) {
+      // Get all participants (creator + booked users) except the updater
+      const allParticipants = [
+        trip.creator.id,
+        ...trip.bookings.map(b => b.userId)
+      ]
+
+      const recipients = allParticipants.filter(id => id !== updaterUserId)
+
+      // Create notification for each recipient
+      for (const recipientId of recipients) {
+        await createNotification({
+          userId: recipientId,
+          type: 'TRIP_UPDATE',
+          title: 'Trip details updated',
+          message: `Trip "${trip.title}" has been updated by ${trip.creator.name || trip.creator.email}`,
+          tripId
+        })
+      }
+    }
+  } catch (error) {
+    // Silently fail
+  }
+}

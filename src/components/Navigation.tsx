@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useAuth } from '@/contexts/AuthContext'
@@ -12,6 +13,19 @@ export default function Navigation() {
   const { user, logout } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Hide navigation on trip details pages
+  const shouldHideNavigation = pathname?.startsWith('/trips/') && pathname !== '/trips'
+
+  if (shouldHideNavigation) {
+    return (
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
+    )
+  }
 
 
   return (

@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (availableSeats < 1 || availableSeats > 7) {
+    if (availableSeats < 1 || availableSeats > 50) {
       return NextResponse.json(
-        { error: 'Available seats must be between 1 and 7' },
+        { error: 'Available seats must be between 1 and 50' },
         { status: 400 }
       )
     }
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     // Parse departure date and time
     const departureDateTime = new Date(`${departureDate}T${departureTime}`)
-    
+
     if (departureDateTime < new Date()) {
       return NextResponse.json(
         { error: 'Departure time cannot be in the past' },
@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
       const searchDate = new Date(date)
       const nextDay = new Date(searchDate)
       nextDay.setDate(nextDay.getDate() + 1)
-      
+
       whereClause.departureDate = {
         gte: searchDate,
         lt: nextDay

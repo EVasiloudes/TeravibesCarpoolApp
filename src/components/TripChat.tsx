@@ -28,10 +28,6 @@ export default function TripChat({ tripId }: TripChatProps) {
   const [error, setError] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   const fetchMessages = useCallback(async () => {
     try {
       const response = await fetch(`/api/trips/${tripId}/messages`)
@@ -51,9 +47,6 @@ export default function TripChat({ tripId }: TripChatProps) {
     fetchMessages()
   }, [tripId, fetchMessages])
 
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault()

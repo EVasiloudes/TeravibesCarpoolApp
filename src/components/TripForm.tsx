@@ -47,7 +47,7 @@ export default function TripForm({ onClose }: TripFormProps) {
     destination: 'Fasli', // Pre-filled as festival location
     departureDate: '2025-08-23', // Pre-filled as festival date
     departureTime: '',
-    availableSeats: 1,
+    availableSeats: 40,
     pricePerSeat: 0,
   })
 
@@ -151,7 +151,7 @@ export default function TripForm({ onClose }: TripFormProps) {
             label="Available Seats"
             type="number"
             min="1"
-            max="7"
+            max="50"
             value={formData.availableSeats}
             onChange={(e) => handleChange('availableSeats', parseInt(e.target.value))}
             required

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyJWT } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { createTripUpdateNotification } from '@/lib/notifications'
 
 // Get single trip
 export async function GET(
@@ -177,6 +178,20 @@ export async function PUT(
         }
       }
     })
+
+    // Send notifications to all trip participants (excluding status-only updates)
+    const isSignificantUpdate = title !== undefined || 
+                               description !== undefined || 
+                               origin !== undefined || 
+                               destination !== undefined || 
+                               departureDate !== undefined || 
+                               departureTime !== undefined || 
+                               availableSeats !== undefined || 
+                               pricePerSeat !== undefined
+
+    if (isSignificantUpdate) {
+      await createTripUpdateNotification(tripId, decoded.userId)
+    }
 
     return NextResponse.json({
       trip: updatedTrip,

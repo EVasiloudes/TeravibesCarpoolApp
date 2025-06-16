@@ -8,8 +8,11 @@ import ParallaxBackground from '@/components/ParallaxBackground'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Terabibes Carpool',
+  title: 'Teravibes Carpool',
   description: 'Share rides to Teravibes Festival',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({

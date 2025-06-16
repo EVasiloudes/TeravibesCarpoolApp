@@ -78,7 +78,8 @@ export async function POST(
       )
     }
 
-    // Check if trip has available seats
+    // Check if trip has
+
     const availableSeats = trip.availableSeats - trip._count.bookings
     if (availableSeats <= 0) {
       return NextResponse.json(
