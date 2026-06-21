@@ -81,25 +81,25 @@ export default function TripChat({ tripId }: TripChatProps) {
 
   if (loading) {
     return (
-      <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Trip Chat</h3>
-        <div className="text-center py-4 text-gray-600 bg-white bg-opacity-50 backdrop-blur-sm rounded-md">Loading messages...</div>
+      <div className="bg-surface rounded-lg shadow border border-divider p-6">
+        <h3 className="text-lg font-semibold text-primary mb-4" style={{ fontFamily: 'var(--font-heading)' }}>Trip Chat</h3>
+        <div className="text-center py-4 text-text-secondary bg-background-alt rounded-md">Loading messages...</div>
       </div>
     )
   }
 
   return (
-    <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow border border-white border-opacity-20">
-      <div className="p-4 border-b border-opacity-20">
-        <h3 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Trip Chat</h3>
-        <p className="text-sm text-gray-600">
+    <div className="bg-surface rounded-lg shadow border border-divider">
+      <div className="p-4 border-b border-divider">
+        <h3 className="text-lg font-semibold text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Trip Chat</h3>
+        <p className="text-sm text-text-secondary">
           Chat with other trip participants
         </p>
       </div>
 
       <div className="h-64 overflow-y-auto p-4 space-y-3">
         {messages.length === 0 ? (
-          <div className="text-center text-gray-500 py-8 bg-white bg-opacity-30 backdrop-blur-sm rounded-md">
+          <div className="text-center text-text-muted py-8 bg-background-alt rounded-md">
             No messages yet. Start the conversation!
           </div>
         ) : (
@@ -111,10 +111,10 @@ export default function TripChat({ tripId }: TripChatProps) {
               }`}
             >
               <div
-                className={`max-w-xs rounded-lg px-3 py-2 backdrop-blur-sm ${
+                className={`max-w-xs rounded-lg px-3 py-2 ${
                   message.userId === user?.id
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                    : 'bg-white bg-opacity-90 text-gray-900 border border-white border-opacity-50'
+                    ? 'bg-accent text-text-inverse'
+                    : 'bg-background-alt text-text-primary border border-divider'
                 }`}
               >
                 <div className="text-sm font-medium mb-1">
@@ -126,8 +126,8 @@ export default function TripChat({ tripId }: TripChatProps) {
                 <div
                   className={`text-xs mt-1 ${
                     message.userId === user?.id
-                      ? 'text-blue-100'
-                      : 'text-gray-500'
+                      ? 'text-text-inverse opacity-80'
+                      : 'text-text-muted'
                   }`}
                 >
                   {new Date(message.createdAt).toLocaleTimeString()}
@@ -139,13 +139,13 @@ export default function TripChat({ tripId }: TripChatProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 border-t border-opacity-20">
+      <div className="p-4 border-t border-divider">
         {error && (
-          <div className="text-red-600 text-sm mb-3 bg-red-50 bg-opacity-90 backdrop-blur-sm p-2 rounded border border-red-200 border-opacity-50">
+          <div className="text-error text-sm mb-3 bg-error/10 p-2 rounded border border-error/30">
             {error}
           </div>
         )}
-        
+
         <form onSubmit={sendMessage} className="flex gap-2">
           <Input
             type="text"
@@ -160,7 +160,6 @@ export default function TripChat({ tripId }: TripChatProps) {
             type="submit"
             disabled={!newMessage.trim() || sending}
             size="sm"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all"
           >
             {sending ? 'Sending...' : 'Send'}
           </Button>

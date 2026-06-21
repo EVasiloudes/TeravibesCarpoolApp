@@ -46,9 +46,11 @@ export default function TripSearch({ onSearch, loading }: TripSearchProps) {
   }
 
   return (
-    <div className="bg-white bg-opacity-95 backdrop-blur-md rounded-lg shadow-md border border-white border-opacity-20 p-6 mb-6">
-      <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Search Trips</h2>
-      
+    <div className="bg-surface rounded-lg shadow-md border border-divider p-6 mb-6">
+      <h2 className="text-lg font-semibold text-primary mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
+        Search Trips
+      </h2>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid md:grid-cols-2 gap-4">
           <Select
@@ -72,17 +74,15 @@ export default function TripSearch({ onSearch, loading }: TripSearchProps) {
             type="submit"
             variant="primary"
             disabled={loading}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all"
           >
             {loading ? 'Searching...' : 'Search Trips'}
           </Button>
-          
+
           <Button
             type="button"
             variant="outline"
             onClick={handleReset}
             disabled={loading}
-            className="bg-white bg-opacity-90 backdrop-blur-sm border-opacity-50 hover:bg-opacity-100"
           >
             Clear Filters
           </Button>

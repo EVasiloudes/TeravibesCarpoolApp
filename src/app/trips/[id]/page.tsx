@@ -212,13 +212,13 @@ export default function TripDetailPage() {
   }
 
   if (!user) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>
+    return <div className="container mx-auto px-4 py-8 text-text-secondary">Loading...</div>
   }
 
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center py-8">Loading trip details...</div>
+        <div className="text-center py-8 text-text-secondary">Loading trip details...</div>
       </div>
     )
   }
@@ -227,7 +227,7 @@ export default function TripDetailPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-8">
-          <div className="text-red-600 mb-4">{error || 'Trip not found'}</div>
+          <div className="text-error mb-4">{error || 'Trip not found'}</div>
           <Button onClick={() => router.push('/trips')}>
             Back to Trips
           </Button>
@@ -252,21 +252,20 @@ export default function TripDetailPage() {
         >
           ← Back to Trips
         </Button>
-        <h1 className="text-3xl font-bold text-gray-600">{trip.title}</h1>
+        <h1 className="text-3xl font-bold text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>{trip.title}</h1>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Trip Details */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-surface rounded-lg shadow p-6 border border-divider">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-600">Trip Details</h2>
+              <h2 className="text-xl font-semibold text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Trip Details</h2>
               {isCreator && !isEditing && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setIsEditing(true)}
-                  className="text-gray-600 border-gray-300 hover:bg-gray-50"
                 >
                   Edit Trip
                 </Button>
@@ -348,7 +347,7 @@ export default function TripDetailPage() {
                 </div>
 
                 {error && (
-                  <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md border border-red-200">
+                  <div className="text-error text-sm bg-error/10 p-3 rounded-md border border-error/30">
                     {error}
                   </div>
                 )}
@@ -381,7 +380,7 @@ export default function TripDetailPage() {
                       variant="outline"
                       onClick={handleDeleteTrip}
                       disabled={actionLoading}
-                      className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
+                      className="text-error border-error/50 hover:bg-error/10"
                     >
                       Delete Trip
                     </Button>
@@ -392,51 +391,51 @@ export default function TripDetailPage() {
               <>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-medium text-gray-500 mb-2">Route</h3>
-                    <div className="text-lg text-gray-600">
-                      <span className="font-semibold text-gray-600">{trip.origin}</span>
-                      <span className="mx-2 text-gray-400">→</span>
-                      <span className="font-semibold text-gray-600">{trip.destination}</span>
+                    <h3 className="font-medium text-text-muted mb-2">Route</h3>
+                    <div className="text-lg text-text-primary">
+                      <span className="font-semibold text-text-primary">{trip.origin}</span>
+                      <span className="mx-2 text-text-muted">→</span>
+                      <span className="font-semibold text-text-primary">{trip.destination}</span>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="font-medium text-gray-500 mb-2">Date & Time</h3>
+                    <h3 className="font-medium text-text-muted mb-2">Date & Time</h3>
                     <div>
-                      <div className="font-semibold text-gray-600">{formatDate(trip.departureDate)}</div>
-                      <div className="text-gray-500">{formatTime(trip.departureTime)}</div>
+                      <div className="font-semibold text-text-primary">{formatDate(trip.departureDate)}</div>
+                      <div className="text-text-secondary">{formatTime(trip.departureTime)}</div>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="font-medium text-gray-500 mb-2">Driver</h3>
-                    <div className="font-semibold text-gray-600">
+                    <h3 className="font-medium text-text-muted mb-2">Driver</h3>
+                    <div className="font-semibold text-text-primary">
                       {trip.creator.name || trip.creator.email}
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="font-medium text-gray-500 mb-2">Seats</h3>
+                    <h3 className="font-medium text-text-muted mb-2">Seats</h3>
                     <div>
-                      <span className="font-semibold text-gray-600">
+                      <span className="font-semibold text-text-primary">
                         {availableSeats} available
                       </span>
-                      <span className="text-gray-500"> / {trip.availableSeats} total</span>
+                      <span className="text-text-secondary"> / {trip.availableSeats} total</span>
                     </div>
                   </div>
 
                   {trip.pricePerSeat && (
                     <div>
-                      <h3 className="font-medium text-gray-500 mb-2">Price</h3>
-                      <div className="text-lg font-semibold text-gray-600">
+                      <h3 className="font-medium text-text-muted mb-2">Price</h3>
+                      <div className="text-lg font-semibold text-text-primary">
                         €{trip.pricePerSeat} per seat
                       </div>
                     </div>
                   )}
 
                   <div>
-                    <h3 className="font-medium text-gray-500 mb-2">Status</h3>
-                    <span className="inline-block px-2 py-1 rounded text-sm font-medium bg-gray-100 text-gray-600">
+                    <h3 className="font-medium text-text-muted mb-2">Status</h3>
+                    <span className="inline-block px-2 py-1 rounded text-sm font-medium bg-background-alt text-text-secondary">
                       {trip.status}
                     </span>
                   </div>
@@ -444,8 +443,8 @@ export default function TripDetailPage() {
 
                 {trip.description && (
                   <div className="mt-6">
-                    <h3 className="font-medium text-gray-500 mb-2">Description</h3>
-                    <p className="text-gray-600">{trip.description}</p>
+                    <h3 className="font-medium text-text-muted mb-2">Description</h3>
+                    <p className="text-text-secondary">{trip.description}</p>
                   </div>
                 )}
 
@@ -485,34 +484,34 @@ export default function TripDetailPage() {
           </div>
 
           {/* Participants */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold text-gray-600 mb-4">
+          <div className="bg-surface rounded-lg shadow p-6 border border-divider">
+            <h2 className="text-xl font-semibold text-text-primary mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
               Participants ({trip.bookings.length + 1})
             </h2>
 
             <div className="space-y-3">
               {/* Driver */}
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
+              <div className="flex items-center justify-between p-3 bg-background-alt rounded">
                 <div>
-                  <div className="font-medium text-gray-600">
+                  <div className="font-medium text-text-primary">
                     {trip.creator.name || trip.creator.email}
                   </div>
-                  <div className="text-sm text-gray-500">Driver</div>
+                  <div className="text-sm text-text-muted">Driver</div>
                 </div>
               </div>
 
               {/* Passengers */}
               {trip.bookings.map((booking) => (
-                <div key={booking.id} className="flex items-center justify-between p-3 border border-gray-200 rounded">
+                <div key={booking.id} className="flex items-center justify-between p-3 border border-divider rounded">
                   <div>
-                    <div className="font-medium text-gray-600">
+                    <div className="font-medium text-text-primary">
                       {booking.user.name || booking.user.email}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-text-muted">
                       Passenger • {booking.seats} seat{booking.seats > 1 ? 's' : ''}
                     </div>
                   </div>
-                  <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-600">
+                  <span className="text-xs px-2 py-1 rounded bg-background-alt text-text-secondary">
                     {booking.status}
                   </span>
                 </div>
@@ -526,9 +525,9 @@ export default function TripDetailPage() {
           {isParticipant ? (
             <TripChat tripId={tripId} />
           ) : (
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-600 mb-4">Trip Chat</h3>
-              <div className="text-center text-gray-500 py-8">
+            <div className="bg-surface rounded-lg shadow p-6 border border-divider">
+              <h3 className="text-lg font-semibold text-text-primary mb-4" style={{ fontFamily: 'var(--font-heading)' }}>Trip Chat</h3>
+              <div className="text-center text-text-muted py-8">
                 Join this trip to access the chat
               </div>
             </div>

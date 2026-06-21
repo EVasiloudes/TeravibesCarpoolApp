@@ -109,10 +109,10 @@ export default function Profile() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Profile Settings</h1>
+        <h1 className="text-3xl font-bold mb-8 text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Profile Settings</h1>
         
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-6">Personal Information</h2>
+        <div className="bg-surface rounded-lg shadow-lg p-6 border border-divider">
+          <h2 className="text-xl font-semibold mb-6 text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Personal Information</h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
@@ -120,9 +120,9 @@ export default function Profile() {
               type="email"
               value={user.email}
               disabled
-              className="bg-gray-50"
+              className="bg-background-alt"
             />
-            <p className="text-sm text-gray-500 -mt-3">
+            <p className="text-sm text-text-muted -mt-3">
               Email cannot be changed as it&apos;s used for authentication
             </p>
             
@@ -143,7 +143,7 @@ export default function Profile() {
               placeholder="Enter your phone number (e.g., +357 99 123456)"
               maxLength={20}
             />
-            <p className="text-sm text-gray-500 -mt-3">
+            <p className="text-sm text-text-muted -mt-3">
               Include country code for international numbers
             </p>
 
@@ -156,15 +156,15 @@ export default function Profile() {
             )}
 
             {success && (
-              <div className="bg-green-50 border border-green-200 rounded-md p-4">
+              <div className="bg-success/10 border border-success/30 rounded-md p-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-green-800">
+                    <p className="text-sm font-medium text-success">
                       {success}
                     </p>
                   </div>
@@ -202,18 +202,18 @@ export default function Profile() {
             </div>
           </form>
           
-          <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-8 pt-6 border-t border-divider">
             <div className="flex items-start">
               <div className="flex-shrink-0">
-                <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-gray-900">
+                <h3 className="text-sm font-medium text-text-primary">
                   About Your Profile
                 </h3>
-                <div className="mt-2 text-sm text-gray-600">
+                <div className="mt-2 text-sm text-text-secondary">
                   <p>
                     Your profile information helps other users identify you when you join trips or send messages. 
                     Make sure to keep your information up to date for the best experience.
@@ -225,12 +225,12 @@ export default function Profile() {
         </div>
         
         {/* Account Stats */}
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Account Information</h3>
+        <div className="mt-8 bg-surface rounded-lg shadow-lg p-6 border border-divider">
+          <h3 className="text-lg font-semibold mb-4 text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Account Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="font-medium text-gray-700">Member since:</span>
-              <p className="text-gray-600">
+              <span className="font-medium text-text-primary">Member since:</span>
+              <p className="text-text-secondary">
                 {new Date(user.createdAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
@@ -239,8 +239,8 @@ export default function Profile() {
               </p>
             </div>
             <div>
-              <span className="font-medium text-gray-700">Last updated:</span>
-              <p className="text-gray-600">
+              <span className="font-medium text-text-primary">Last updated:</span>
+              <p className="text-text-secondary">
                 {new Date(user.updatedAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',

@@ -41,15 +41,15 @@ export default function Dashboard() {
   }
 
   if (!user) {
-    return <div className="container mx-auto px-4 py-8">Loading...</div>
+    return <div className="container mx-auto px-4 py-8 text-text-secondary">Loading...</div>
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back, {user.name || user.email}!</p>
+          <h1 className="text-3xl font-bold text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Dashboard</h1>
+          <p className="text-text-secondary mt-2">Welcome back, {user.name || user.email}!</p>
         </div>
         <Button
           variant="primary"
@@ -60,21 +60,21 @@ export default function Dashboard() {
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-md mb-6">
+        <div className="bg-error/10 text-error p-4 rounded-md mb-6 border border-error/30">
           {error}
         </div>
       )}
 
       {loading ? (
         <div className="text-center py-8">
-          <div className="text-gray-600">Loading your trips...</div>
+          <div className="text-text-secondary">Loading your trips...</div>
         </div>
       ) : (
         <div className="space-y-8">
           {/* Created Trips */}
           <div>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold">Your Trips</h2>
+              <h2 className="text-2xl font-semibold text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Your Trips</h2>
               <Button
                 variant="outline"
                 size="sm"
@@ -83,10 +83,10 @@ export default function Dashboard() {
                 Create Trip
               </Button>
             </div>
-            
+
             {tripsData?.createdTrips.length === 0 ? (
-              <div className="bg-gray-50 rounded-lg p-8 text-center">
-                <p className="text-gray-600 mb-4">You haven&apos;t created any trips yet</p>
+              <div className="bg-background-alt rounded-lg p-8 text-center border border-divider">
+                <p className="text-text-secondary mb-4">You haven&apos;t created any trips yet</p>
                 <Button
                   variant="primary"
                   onClick={() => router.push('/trips')}
@@ -110,11 +110,11 @@ export default function Dashboard() {
 
           {/* Joined Trips */}
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Trips You&apos;ve Joined</h2>
-            
+            <h2 className="text-2xl font-semibold mb-4 text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Trips You&apos;ve Joined</h2>
+
             {tripsData?.joinedTrips.length === 0 ? (
-              <div className="bg-gray-50 rounded-lg p-8 text-center">
-                <p className="text-gray-600 mb-4">You haven&apos;t joined any trips yet</p>
+              <div className="bg-background-alt rounded-lg p-8 text-center border border-divider">
+                <p className="text-text-secondary mb-4">You haven&apos;t joined any trips yet</p>
                 <Button
                   variant="primary"
                   onClick={() => router.push('/trips')}
@@ -131,7 +131,7 @@ export default function Dashboard() {
                       currentUserId={user.id}
                       showJoinButton={false}
                     />
-                    <div className="absolute top-4 right-4 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                    <div className="absolute top-4 right-4 bg-success/15 text-success text-xs px-2 py-1 rounded">
                       Joined
                     </div>
                   </div>
@@ -142,25 +142,25 @@ export default function Dashboard() {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-blue-50 rounded-lg p-6 text-center">
-              <div className="text-2xl font-bold text-blue-600">
+            <div className="bg-primary/10 rounded-lg p-6 text-center border border-divider">
+              <div className="text-2xl font-bold text-primary">
                 {tripsData?.createdTrips.length || 0}
               </div>
-              <div className="text-blue-800">Trips Created</div>
+              <div className="text-text-secondary">Trips Created</div>
             </div>
-            
-            <div className="bg-green-50 rounded-lg p-6 text-center">
-              <div className="text-2xl font-bold text-green-600">
+
+            <div className="bg-secondary/10 rounded-lg p-6 text-center border border-divider">
+              <div className="text-2xl font-bold text-secondary-dark">
                 {tripsData?.joinedTrips.length || 0}
               </div>
-              <div className="text-green-800">Trips Joined</div>
+              <div className="text-text-secondary">Trips Joined</div>
             </div>
-            
-            <div className="bg-purple-50 rounded-lg p-6 text-center">
-              <div className="text-2xl font-bold text-purple-600">
+
+            <div className="bg-accent/10 rounded-lg p-6 text-center border border-divider">
+              <div className="text-2xl font-bold text-accent-dark">
                 {(tripsData?.createdTrips.reduce((sum, trip) => sum + trip._count.bookings, 0) || 0)}
               </div>
-              <div className="text-purple-800">Passengers Helped</div>
+              <div className="text-text-secondary">Passengers Helped</div>
             </div>
           </div>
         </div>

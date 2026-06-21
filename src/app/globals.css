@@ -1,16 +1,177 @@
 @import "tailwindcss";
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@theme inline {
+  /* Colors — mapped to CSS variables for theme switching */
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-light: var(--color-secondary-light);
+  --color-secondary-dark: var(--color-secondary-dark);
+  --color-accent: var(--color-accent);
+  --color-accent-light: var(--color-accent-light);
+  --color-accent-dark: var(--color-accent-dark);
+  --color-background: var(--color-background);
+  --color-background-alt: var(--color-background-alt);
+  --color-surface: var(--color-surface);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-inverse: var(--color-text-inverse);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
+  --color-warning: var(--color-warning);
+  --color-overlay: var(--color-overlay);
+  --color-divider: var(--color-divider);
+
+  /* Fonts */
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --font-accent: var(--font-accent);
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-inner: var(--shadow-inner);
+}
+
+:root,
+[data-theme='light'] {
+  /* Colors */
+  --color-primary: #2D3A2E;
+  --color-primary-light: #4A5A47;
+  --color-primary-dark: #1A231B;
+  --color-secondary: #C4956A;
+  --color-secondary-light: #D4B08A;
+  --color-secondary-dark: #A67B4F;
+  --color-accent: #E07B54;
+  --color-accent-light: #F4A582;
+  --color-accent-dark: #C45A34;
+  --color-background: #F5F1EB;
+  --color-background-alt: #EDE7DD;
+  --color-surface: #FFFFFF;
+  --color-text-primary: #2D2319;
+  --color-text-secondary: #5C4D3D;
+  --color-text-muted: #8B7D6B;
+  --color-text-inverse: #F5F1EB;
+  --color-success: #5A7A52;
+  --color-error: #C45A34;
+  --color-warning: #D4B08A;
+  --color-overlay: rgba(45, 35, 25, 0.7);
+  --color-divider: rgba(92, 77, 61, 0.15);
+
+  /* Typography */
+  --font-heading: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-source-sans), 'Helvetica Neue', sans-serif;
+  --font-accent: var(--font-space-mono), monospace;
+  --text-xs: 0.64rem;
+  --text-sm: 0.8rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.563rem;
+  --text-xl: 1.953rem;
+  --text-2xl: 2.441rem;
+  --text-3xl: 3.052rem;
+  --text-4xl: 3.815rem;
+  --leading-tight: 1.1;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+
+  /* Spacing (4px base) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-xxl: 3rem;
+  --space-xxxl: 4rem;
+  --space-huge: 6rem;
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(45, 35, 25, 0.08);
+  --shadow-md: 0 4px 12px rgba(45, 35, 25, 0.12);
+  --shadow-lg: 0 8px 24px rgba(45, 35, 25, 0.16);
+  --shadow-xl: 0 16px 48px rgba(45, 35, 25, 0.2);
+  --shadow-inner: inset 0 2px 4px rgba(45, 35, 25, 0.08);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-slower: 600ms ease;
+
+  /* Layout */
+  --max-width: 1200px;
+  --nav-height: 64px;
+}
+
+[data-theme='dark'] {
+  --color-primary: #4A5A47;
+  --color-primary-light: #5C6C59;
+  --color-primary-dark: #2D3A2E;
+  --color-secondary: #D4B08A;
+  --color-secondary-light: #DEC9A8;
+  --color-secondary-dark: #C4956A;
+  --color-accent: #F4A582;
+  --color-accent-light: #FAC1AA;
+  --color-accent-dark: #E07B54;
+  --color-background: #1A231B;
+  --color-background-alt: #2D3A2E;
+  --color-surface: #3A2D1F;
+  --color-text-primary: #F5F1EB;
+  --color-text-secondary: #C4B8A8;
+  --color-text-muted: #8B7D6B;
+  --color-text-inverse: #1A231B;
+  --color-overlay: rgba(0, 0, 0, 0.7);
+  --color-divider: rgba(196, 184, 168, 0.15);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  [data-theme='system'] {
+    --color-primary: #4A5A47;
+    --color-primary-light: #5C6C59;
+    --color-primary-dark: #2D3A2E;
+    --color-secondary: #D4B08A;
+    --color-secondary-light: #DEC9A8;
+    --color-secondary-dark: #C4956A;
+    --color-accent: #F4A582;
+    --color-accent-light: #FAC1AA;
+    --color-accent-dark: #E07B54;
+    --color-background: #1A231B;
+    --color-background-alt: #2D3A2E;
+    --color-surface: #3A2D1F;
+    --color-text-primary: #F5F1EB;
+    --color-text-secondary: #C4B8A8;
+    --color-text-muted: #8B7D6B;
+    --color-text-inverse: #1A231B;
+    --color-overlay: rgba(0, 0, 0, 0.7);
+    --color-divider: rgba(196, 184, 168, 0.15);
   }
 }
 
@@ -20,12 +181,15 @@ html {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  /* Remove default background for parallax */
-  background: transparent;
-  /* Enable hardware acceleration for smooth scrolling */
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
 }
 
 /* Parallax container optimizations */
@@ -36,19 +200,16 @@ body {
   overflow-y: auto;
 }
 
-/* Ensure smooth transforms for parallax elements */
 .will-change-transform {
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* Optimize for mobile touch scrolling */
 * {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Prevent horizontal scrolling from parallax effects */
 body, html {
   overflow-x: hidden;
 }

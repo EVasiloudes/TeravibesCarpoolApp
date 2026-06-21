@@ -102,7 +102,7 @@ export default function TripsPageContent() {
           >
             ← Back to Trips
           </Button>
-          <h1 className="text-2xl sm:text-3xl font-bold">Create New Trip</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Create New Trip</h1>
         </div>
         <TripForm onClose={() => {
           setShowCreateForm(false)
@@ -115,7 +115,7 @@ export default function TripsPageContent() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">Available Trips</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>Available Trips</h1>
         <Button
           variant="primary"
           onClick={() => setShowCreateForm(true)}
@@ -149,7 +149,7 @@ export default function TripsPageContent() {
       ) : trips.length === 0 ? (
         <EmptyState
           icon={
-            <svg className="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-16 h-16 mx-auto text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           }
